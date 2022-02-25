@@ -20,14 +20,13 @@ void main() {
       expect(find.text('1 year ago'), findsOneWidget);
 
       await robot.tap(find.text('Check now! 🚀'));
-      await Future.delayed(const Duration(seconds: 4));
-      await robot.pumpAndSettle();
+
+      await robot.waitFor(find.text('You would have'));
 
 
       expect(find.text('Try out our time machine'), findsNothing);
       expect(find.text('How much would you have today if...'), findsNothing);
 
-      expect(find.text('You would have'), findsOneWidget);
       expect(find.text('Total invested'), findsOneWidget);
       expect(find.text('Current value'), findsOneWidget);
       expect(find.text('Percent increase'), findsOneWidget);

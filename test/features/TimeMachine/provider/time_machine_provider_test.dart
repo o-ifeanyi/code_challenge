@@ -25,12 +25,10 @@ void main() {
   });
 
   group('TimeMachineRepo', () {
-    final queryResult = MockQueryResult();
     test('fetchDCA should return true when successful', () async {
       when(() => mockTimeMachineRepo.fetchDCA(any())).thenAnswer(
         (_) => Future.value(Right(responseModelFixture)),
       );
-      when(() => queryResult.data).thenReturn(requestResultDataFixture);
 
       final response = await timeMachineProvider.fetchDCA();
 

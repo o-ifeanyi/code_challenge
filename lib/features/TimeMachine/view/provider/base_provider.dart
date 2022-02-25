@@ -39,9 +39,12 @@ class BaseProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String get shareTextFrequency => kFrequencies.keys.firstWhere(
-        (key) => kFrequencies[key] == _requestEntity.frequency, orElse: () => '',
-      ).toLowerCase();
+  String get shareTextFrequency => kFrequencies.keys
+      .firstWhere(
+        (key) => kFrequencies[key] == _requestEntity.frequency,
+        orElse: () => '',
+      )
+      .toLowerCase();
 
   String get shareText =>
       'If I bought \$${_requestEntity.amount} worth of ${_requestEntity.crypto} $shareTextFrequency starting ${_requestEntity.durationString} ago, I would\'ve spent \$${_responseEntity.totalInvested} and my investment would currently be worth ${_responseEntity.totalValue} (a ${_responseEntity.percentageChange}% change). Check for yourself at https://useaccrue.com/#time-machine via @useaccrue';
