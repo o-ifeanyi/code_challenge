@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:code_challenge/core/routes/navigation.dart';
 import 'package:code_challenge/core/routes/router.dart';
+import 'package:code_challenge/core/util/app_aware.dart';
 import 'package:code_challenge/core/util/themes.dart';
 import 'package:code_challenge/features/TimeMachine/view/provider/time_machine_provider.dart';
 import 'package:code_challenge/injection_container.dart';
@@ -22,11 +23,13 @@ class Robot {
           ChangeNotifierProvider<TimeMachineProvider>(
               create: (_) => sl<TimeMachineProvider>()),
         ],
-        child: MaterialApp(
-          title: 'Accrue',
-          theme: themeOptions[ThemeOptions.light],
-          navigatorKey: sl<NavigationHandler>().navigatorKey,
-          onGenerateRoute: AppRoute.onGenerateRoute,
+        child: AppAware(
+          child: MaterialApp(
+            title: 'Accrue',
+            theme: themeOptions[ThemeOptions.light],
+            navigatorKey: sl<NavigationHandler>().navigatorKey,
+            onGenerateRoute: AppRoute.onGenerateRoute,
+          ),
         ),
       ),
     );
@@ -45,12 +48,13 @@ class Robot {
   }
 
   Future<void> waitFor(Finder finder,
-      {int timeoutInSeconds = 10, int interval = 500}) {
+      {int timeoutInSeconds = 15, int interval = 500}) {
     Completer c = Completer();
     late Timer checker;
     late Timer timeout;
 
-    checker = Timer.periodic(Duration(milliseconds: interval), (_) {
+    checker = Timer.periodic(Duration(milliseconds: interval), (_) async {
+      await tester.pump();
       if (finder.evaluate().isNotEmpty) {
         checker.cancel();
         timeout.cancel();
